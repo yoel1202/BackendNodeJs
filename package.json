@@ -1,0 +1,41 @@
+{
+    "name": "restapi-nodejs-express-mysql",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "npm run clean && babel ./src --out-dir dist",
+        "start": "node dist/index.js",
+        "clean": "rm -rf ./dist && mkdir dist",
+        "dev": "nodemon --exec babel-node --presets=@babel/preset-env ./src/index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@azure/logger": "^1.0.4",
+        "@azure/storage-blob": "^12.13.0",
+        "body-parser": "^1.20.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.0",
+        "express": "^4.17.1",
+        "into-stream": "^6.0.0",
+        "jsonwebtoken": "^8.5.1",
+        "moment-timezone": "^0.5.39",
+        "mongoose": "^5.7.3",
+        "multer": "^1.4.5-lts.1",
+        "mysql": "^2.18.1",
+        "path": "^0.12.7",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.6.2",
+        "@babel/core": "^7.20.2",
+        "@babel/node": "^7.20.2",
+        "@babel/preset-env": "^7.6.2",
+        "babel-polyfill": "^6.26.0",
+        "dotenv": "^8.1.0",
+        "morgan": "^1.10.0",
+        "nodemon": "^1.19.4"
+    }
+}
