@@ -4,14 +4,8 @@ import parse from "body-parser";
 // import morgan from "morgan";
 
 // Routes
-import salesRoutes from "./routes/sales.routes";
-import clientsRoutes from "./routes/clients.routes";
-import contractsRoutes from "./routes/contracts.routes";
-import creditsRoutes from "./routes/credits.routes";
-import creditnoteRoutes from "./routes/creditnote.routes";
-import debitnoteRoutes from "./routes/debitnote.routes";
-import personal from "./routes/personal.routes";
-import upload from "./routes/upload.routes";
+
+import clients from "./routes/clients.routes";
 import login from "./routes/login.routes";
 
 
@@ -28,14 +22,7 @@ var getCors = cors()
 
 // Routes
 app.use(getCors)
-app.use("/api/clients", clientsRoutes);
-app.use("/api/sales", salesRoutes);
-app.use("/api/contracts", contractsRoutes);
-app.use("/api/credits", creditsRoutes);
-app.use("/api/creditnote", creditnoteRoutes);
-app.use("/api/debitnote", debitnoteRoutes);
-app.use("/api/personal", personal);
-app.use("/api/upload", upload);
+app.use("/api/clients", clients);
 app.use("/api/login", login);
 
 
