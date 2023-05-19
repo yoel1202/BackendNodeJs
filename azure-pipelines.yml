@@ -16,6 +16,7 @@ stages:
       steps:
       - pwsh: |
           gci env: | select name
+          write-host ${env:ECRREPOSITORY}
       # - task: Docker@2
       #   inputs:
       #     command: 'build'
