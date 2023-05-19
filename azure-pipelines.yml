@@ -14,28 +14,29 @@ stages:
   jobs:
     - job:  build
       steps:
-      - task: Docker@2
-        inputs:
-          command: 'build'
-          Dockerfile: '**/Dockerfile'
-          repository: 'backnodejs'
-          tags: $(Build.BuildId)
-          arguments: '--build-arg host=$(host) --build-arg port=$(port) --build-arg database=$(database) --build-arg user=$(username) --build-arg password=$(password)'
-      - task: ECRPushImage@1
-        inputs:
-          awsCredentials: 'awsConection'
-          regionName: 'us-east-1'
-          sourceImageName: 'backnodejs'
-          sourceImageTag: '$(Build.BuildId)'
-          repositoryName: 'prdcontainer'
-          pushTag: '$(Build.BuildId)'
+      - bash: "hola"
+      # - task: Docker@2
+      #   inputs:
+      #     command: 'build'
+      #     Dockerfile: '**/Dockerfile'
+      #     repository: 'backnodejs'
+      #     tags: $(Build.BuildId)
+      #     arguments: '--build-arg host=$(host) --build-arg port=$(port) --build-arg database=$(database) --build-arg user=$(username) --build-arg password=$(password)'
+      # - task: ECRPushImage@1
+      #   inputs:
+      #     awsCredentials: 'awsConection'
+      #     regionName: 'us-east-1'
+      #     sourceImageName: 'backnodejs'
+      #     sourceImageTag: '$(Build.BuildId)'
+      #     repositoryName: 'prdcontainer'
+      #     pushTag: '$(Build.BuildId)'
 - stage: "deploy"
   jobs:
     - job:  deploy
       steps:
         - task: DownloadSecureFile@1
-          name: caCertificate
-          displayName: 'Download CA certificate'
+          name: configdeploy
+          displayName: 'Download configdeploy certificate'
           inputs:
             secureFile: 'configdeploy.json'
         - task: CopyFiles@2
@@ -54,6 +55,7 @@ stages:
               $newJson = $jsonConfig | ConvertTo-Json -depth 100
               $newJson | Set-Content configdeploy.json
           displayName: "config Image for Json"
+        - bash: cat configdeploy.json
         - task: AWSCLI@1
           inputs:
             awsCredentials: 'awsConection'
