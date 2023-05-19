@@ -5,6 +5,8 @@
 
 trigger:
 - main
+- develop
+
 
 pool:
   vmImage: ubuntu-latest
@@ -28,4 +30,28 @@ stages:
           sourceImageTag: '$(Build.BuildId)'
           repositoryName: 'app-runner-rds-registry'
           pushTag: '$(Build.BuildId)'
-# - stage: "deploy"
+- stage: "deploy"
+  jobs:
+    - job:  
+      steps:
+        - task: DownloadSecureFile@1
+          name: caCertificate
+          displayName: 'Download CA certificate'
+          inputs:
+            secureFile: 'configdeploy.json'
+        - task: CopyFiles@2
+          inputs:
+            SourceFolder: '$(Agent.TempDirectory)'
+            Contents: 'configdeploy.json'
+            TargetFolder: '$(Build.SourcesDirectory)'
+            CleanTargetFolder: false
+            overWrite: false
+            flattenFolders: false
+            preserveTimestamp: true
+          displayName: 'Copying configdeploy.json'
+
+        - task: AWSCLI@1
+          inputs:
+            awsCredentials: 'awsConection'
+            regionName: 'us-east-1'
+            awsCommand: 'aws apprunner update-service     --cli-input-json file://configdeploy.json'
