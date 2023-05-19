@@ -59,5 +59,6 @@ stages:
           inputs:
             awsCredentials: 'awsConection'
             regionName: 'us-east-1'
-            awsCommand: 'aws apprunner update-service     --cli-input-json file://configdeploy.json'
-          displayName: "Deploy to App Runner"
+            awsCommand: 'apprunner'
+            awsSubCommand: 'update-service'
+            awsArguments: '--cli-input-json file://configdeploy.json'
