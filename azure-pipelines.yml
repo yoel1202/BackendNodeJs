@@ -53,7 +53,7 @@ stages:
               $jsonConfig=Get-Content -Raw -Path configdeploy.json | ConvertFrom-Json 
               $jsonConfig.SourceConfiguration.ImageRepository.ImageIdentifier="741840888693.dkr.ecr.us-east-1.amazonaws.com/app-runner-rds-registry:${env:BUILD_BUILDID}"
               $newJson = $jsonConfig | ConvertTo-Json -depth 100
-              $newJson | Set-Content configdeploy1.json
+              $newJson | Set-Content configdeploy.json
           displayName: "config Image for Json"
         - task: AWSCLI@1
           inputs:
