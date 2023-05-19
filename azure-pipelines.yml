@@ -14,7 +14,7 @@ stages:
   jobs:
     - job:  build
       steps:
-      - bash: "hola"
+      - bash: echo "hola"
       # - task: Docker@2
       #   inputs:
       #     command: 'build'
