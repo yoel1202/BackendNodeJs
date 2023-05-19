@@ -8,15 +8,19 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
-
+variables:
+ - name: ecrRepository
+   value: '940053568539.dkr.ecr.us-east-1.amazonaws.com/prdcontainer'
 stages:
 - stage: "Build"
   jobs:
     - job:  build
       steps:
       - pwsh: |
-          gci env: | select name
+          gci env:
           write-host ${env:ECRREPOSITORY}
+          write-host ${env:ECR}
+          write-host "$(ecr)"
       # - task: Docker@2
       #   inputs:
       #     command: 'build'
@@ -53,7 +57,7 @@ stages:
           displayName: 'Copying configdeploy.json'
         - pwsh: |
               $jsonConfig=Get-Content -Raw -Path configdeploy.json | ConvertFrom-Json 
-              $jsonConfig.SourceConfiguration.ImageRepository.ImageIdentifier="${env:ECRREPOSITORY}:${env:BUILD_BUILDID}"
+              $jsonConfig.SourceConfiguration.ImageRepository.ImageIdentifier="$(ecr):${env:BUILD_BUILDID}"
               $newJson = $jsonConfig | ConvertTo-Json -depth 100
               $newJson | Set-Content configdeploy.json
           displayName: "config Image for Json"
