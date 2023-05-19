@@ -25,11 +25,11 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
 USER node
-ENV PORT 8080
-ENV HOST 20.9.42.153
-ENV DATABASE funeraria
-ENV USER root
-ENV PASSWORD Andrey1202
+# ENV PORT 8080
+# ENV HOST 186.15.239.33
+# ENV DATABASE elaniin
+# ENV USER admin
+# ENV PASSWORD Andrey1202
 EXPOSE 8080
 
 CMD ["node", "./dist/index.js"]
