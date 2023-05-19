@@ -5,17 +5,59 @@
 
 trigger:
 - main
+- develop
+
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
-
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+stages:
+- stage: "Build"
+  jobs:
+    - job:  
+      steps:
+      - task: Docker@2
+        inputs:
+          command: 'build'
+          Dockerfile: '**/Dockerfile'
+          repository: 'backnodejs'
+          tags: $(Build.BuildId)
+      - task: ECRPushImage@1
+        inputs:
+          awsCredentials: 'awsConection'
+          regionName: 'us-east-1'
+          sourceImageName: 'backnodejs'
+          sourceImageTag: '$(Build.BuildId)'
+          repositoryName: 'app-runner-rds-registry'
+          pushTag: '$(Build.BuildId)'
+- stage: "deploy"
+  jobs:
+    - job:  
+      steps:
+        - task: DownloadSecureFile@1
+          name: caCertificate
+          displayName: 'Download CA certificate'
+          inputs:
+            secureFile: 'configdeploy.json'
+        - task: CopyFiles@2
+          inputs:
+            SourceFolder: '$(Agent.TempDirectory)'
+            Contents: 'configdeploy.json'
+            TargetFolder: '$(Build.SourcesDirectory)'
+            CleanTargetFolder: false
+            overWrite: false
+            flattenFolders: false
+            preserveTimestamp: true
+          displayName: 'Copying configdeploy.json'
+        - pwsh: |
+              $jsonConfig=Get-Content -Raw -Path configdeploy.json | ConvertFrom-Json 
+              $jsonConfig.SourceConfiguration.ImageRepository.ImageIdentifier="741840888693.dkr.ecr.us-east-1.amazonaws.com/app-runner-rds-registry:${env:BUILD_BUILDID}"
+              $newJson = $jsonConfig | ConvertTo-Json -depth 100
+              $newJson | Set-Content configdeploy1.json
+          displayName: "config Image for Json"
+        - task: AWSCLI@1
+          inputs:
+            awsCredentials: 'awsConection'
+            regionName: 'us-east-1'
+            awsCommand: 'aws apprunner update-service     --cli-input-json file://configdeploy.json'
+          displayName: "Deploy to App Runner"
