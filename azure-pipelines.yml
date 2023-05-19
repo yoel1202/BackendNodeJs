@@ -14,7 +14,8 @@ stages:
   jobs:
     - job:  build
       steps:
-      - bash: echo "hola"
+      - pwsh: |
+          gci env: | select name
       # - task: Docker@2
       #   inputs:
       #     command: 'build'
