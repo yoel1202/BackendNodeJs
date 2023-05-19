@@ -1,9 +1,5 @@
 FROM node:12-alpine AS base
-ARG port
-ARG host
-ARG database
-ARG user
-ARG password
+
 
 WORKDIR /app
 
@@ -25,6 +21,11 @@ RUN npm prune --production # Remove dev dependencies
 
 # ---------- Release ----------
 FROM base AS release
+ARG port
+ARG host
+ARG database
+ARG user
+ARG password
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
