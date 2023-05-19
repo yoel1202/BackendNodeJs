@@ -1,4 +1,9 @@
 FROM node:12-alpine AS base
+ARG port
+ARG host
+ARG database
+ARG user
+ARG password
 
 WORKDIR /app
 
@@ -25,13 +30,11 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
 USER node
-# ENV PORT 8080
-# ENV HOST 186.15.239.33
-# ENV DATABASE elaniin
-# ENV USER admin
-# ENV PASSWORD Andrey1202
+ENV PORT=$port
+ENV HOST=$host
+ENV DATABASE=$database
+ENV USER=$user
+ENV PASSWORD=$password
 EXPOSE 8080
 
 CMD ["node", "./dist/index.js"]
-
-# CMD ["npm", "run", "dev"]

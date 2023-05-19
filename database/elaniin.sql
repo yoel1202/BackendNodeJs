@@ -25,29 +25,29 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Clients.getByName` (`Iid` INT)   BEGIN
+CREATE DEFINER=`admin`@`%` PROCEDURE `Clients.getByName` (`Iid` INT)   BEGIN
 		SELECT name FROM clients WHERE id=Iid;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Clients.insertClient` (`name` VARCHAR(100))   BEGIN
+CREATE DEFINER=`admin`@`%` PROCEDURE `Clients.insertClient` (`name` VARCHAR(100))   BEGIN
 		INSERT INTO `clients`(`name`) VALUES (name);
         SELECT id,name FROM clients ORDER BY id DESC LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getByName` (`Iid` INT)   BEGIN
+CREATE DEFINER=`admin`@`%` PROCEDURE `getByName` (`Iid` INT)   BEGIN
 		SELECT name FROM elaniin WHERE id=Iid;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Login.InsertTokenJwt` (`IUsuarioId` INT, `IToken` TEXT, `IDate` DATETIME, `IDateExpires` DATETIME)   BEGIN
+CREATE DEFINER=`admin`@`%` PROCEDURE `Login.InsertTokenJwt` (`IUsuarioId` INT, `IToken` TEXT, `IDate` DATETIME, `IDateExpires` DATETIME)   BEGIN
 		INSERT INTO `operatios.token`(Token,UsuarioId,Date,DateExpires)  values(IToken,IUsuarioId,IDate,IDateExpires);
         SELECT Token as Token FROM `operatios.token`order by TokenId desc limit 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Login.selectTokenJwt` (`IToken` TEXT)   BEGIN
+CREATE DEFINER=`admin`@`%` PROCEDURE `Login.selectTokenJwt` (`IToken` TEXT)   BEGIN
   SELECT Token FROM `operatios.token` where Token=IToken and   now() <= DateExpires limit 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Login.validateUser` (`Usuarios` VARCHAR(20), `Claves` VARCHAR(10), OUT `Mensaje` VARCHAR(100))   begin
+CREATE DEFINER=`admin`@`%` PROCEDURE `Login.validateUser` (`Usuarios` VARCHAR(20), `Claves` VARCHAR(10), OUT `Mensaje` VARCHAR(100))   begin
 
     if(not exists(Select * from usuario where Usuario=Usuarios))then
 
