@@ -14,19 +14,6 @@ stages:
   jobs:
     - job:  build
       steps:
-      - task: SecretsManagerGetSecret@1
-        inputs:
-          awsCredentials: 'awsConection'
-          regionName: 'us-east-1'
-          secretIdOrName: 'username'
-          variableName: 'username'
-      - task: SecretsManagerGetSecret@1
-        inputs:
-          awsCredentials: 'awsConection'
-          regionName: 'us-east-1'
-          secretIdOrName: 'password'
-          variableName: 'password'
-      - bash: echo $(username)
       - task: Docker@2
         inputs:
           command: 'build'
