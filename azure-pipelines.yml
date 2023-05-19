@@ -28,7 +28,7 @@ stages:
           regionName: 'us-east-1'
           sourceImageName: 'backnodejs'
           sourceImageTag: '$(Build.BuildId)'
-          repositoryName: 'app-runner-rds-registry'
+          repositoryName: 'prdcontainer'
           pushTag: '$(Build.BuildId)'
 - stage: "deploy"
   jobs:
