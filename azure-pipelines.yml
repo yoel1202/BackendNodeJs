@@ -49,9 +49,15 @@ stages:
             flattenFolders: false
             preserveTimestamp: true
           displayName: 'Copying configdeploy.json'
-
+        - pwsh: |
+              $jsonConfig=Get-Content -Raw -Path configdeploy.json | ConvertFrom-Json 
+              $jsonConfig.SourceConfiguration.ImageRepository.ImageIdentifier="741840888693.dkr.ecr.us-east-1.amazonaws.com/app-runner-rds-registry:${env:BUILD_BUILDID}"
+              $newJson = $jsonConfig | ConvertTo-Json -depth 100
+              $newJson | Set-Content configdeploy1.json
+          displayName: "config Image for Json"
         - task: AWSCLI@1
           inputs:
             awsCredentials: 'awsConection'
             regionName: 'us-east-1'
             awsCommand: 'aws apprunner update-service     --cli-input-json file://configdeploy.json'
+          displayName: "Deploy to App Runner"
