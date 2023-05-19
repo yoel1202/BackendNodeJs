@@ -18,13 +18,13 @@ stages:
         inputs:
           awsCredentials: 'awsConection'
           regionName: 'us-east-1'
-          secretIdOrName: 'arn:aws:secretsmanager:us-east-1:940053568539:secret:rds!cluster-8ac19048-f021-4283-a951-7134947dbb6c-mRkXWD:username'
+          secretIdOrName: 'username'
           variableName: 'username'
       - task: SecretsManagerGetSecret@1
         inputs:
           awsCredentials: 'awsConection'
           regionName: 'us-east-1'
-          secretIdOrName: 'arn:aws:secretsmanager:us-east-1:940053568539:secret:rds!cluster-8ac19048-f021-4283-a951-7134947dbb6c-mRkXWD:password'
+          secretIdOrName: 'password'
           variableName: 'password'
       - bash: echo $(username)
       - task: Docker@2
