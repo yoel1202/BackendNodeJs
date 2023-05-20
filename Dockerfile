@@ -1,6 +1,5 @@
 FROM node:12-alpine AS base
 
-
 WORKDIR /app
 
 # ---------- Builder ----------
@@ -21,21 +20,13 @@ RUN npm prune --production # Remove dev dependencies
 
 # ---------- Release ----------
 FROM base AS release
-ARG port
-ARG host
-ARG database
-ARG user
-ARG password
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
 USER node
-ENV PORT=$port
-ENV HOST=$host
-ENV DATABASE=$database
-ENV USER=$user
-ENV PASSWORD=$password
+
 EXPOSE 8080
 
 CMD ["node", "./dist/index.js"]
+

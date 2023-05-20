@@ -21,7 +21,7 @@ stages:
           Dockerfile: '**/Dockerfile'
           repository: 'backnodejs'
           tags: $(Build.BuildId)
-          # arguments: '--build-arg host=$(host) --build-arg port=$(port) --build-arg database=$(database) --build-arg user=$(username) --build-arg password=$(password)'
+         
       - task: ECRPushImage@1
         inputs:
           awsCredentials: 'awsConection'
